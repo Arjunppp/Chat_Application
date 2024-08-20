@@ -1,0 +1,34 @@
+# Ignore all files and folders in chat-app-client and chat-app-server directories
+/chat-app-client/node_modules
+/chat-app-client/dist
+/chat-app-client/dist-ssr
+/chat-app-client/*.local
+/chat-app-client/.vscode
+/chat-app-client/.idea
+/chat-app-client/.DS_Store
+/chat-app-client/*.suo
+/chat-app-client/*.ntvs*
+/chat-app-client/*.njsproj
+/chat-app-client/*.sln
+/chat-app-client/*.sw?
+
+/chat-app-server/node_modules
+/chat-app-server/dist
+/chat-app-server/dist-ssr
+/chat-app-server/*.local
+/chat-app-server/.vscode
+/chat-app-server/.idea
+/chat-app-server/.DS_Store
+/chat-app-server/*.suo
+/chat-app-server/*.ntvs*
+/chat-app-server/*.njsproj
+/chat-app-server/*.sln
+/chat-app-server/*.sw?
+
+# Ignore other files and directories
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
