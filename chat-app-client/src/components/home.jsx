@@ -32,11 +32,11 @@ export const Home = () => {
               </ul>
             </div>
 
-            <div className="flex items-center justify-center w-64 h-64 rotate-45 bg-orange-600 rounded fade-border">
+            <div className="flex items-center justify-center ">
               <img
-                src="/images/chat_app_logo.webp"
+                src="/images/designedLogo.png"
                 alt="Chat App Logo"
-                className="w-60 h-60 rotate-0"
+                className="w-72 h-60 rounded"
               />
             </div>
           </div>
