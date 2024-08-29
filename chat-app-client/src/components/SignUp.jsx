@@ -17,25 +17,36 @@ export const SignUp = () => {
     email: false,
     password: false,
     cnfrm_password: false,
-    date_of_birth:false,
+    date_of_birth: false,
   });
   const [isChanged, setChanged] = useState({
     email: false,
     password: false,
     cnfrm_password: false,
-    date_of_birth:false
-
+    date_of_birth: false,
   });
-  const [isEMpty , setEmpty] = useState(false);
+  const [isEMpty, setEmpty] = useState(false);
+
+  const [isSubmit, setSubmit] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
+
     for (const key in formState) {
       if (formState[key] === "") {
         setEmpty(true);
         break;
       }
-    };
-    console.log(formState);
+    }
+
+    if (
+      (isEMpty,
+      !isValid.email,
+      !isValid.password,
+      isValid.date_of_birth,
+      isValid.cnfrm_password)
+    ) {
+      setSubmit(true);
+    }
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -45,7 +56,8 @@ export const SignUp = () => {
     }));
   };
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])[a-zA-Z\d@#$%^&+=!]{6,}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])[a-zA-Z\d@#$%^&+=!]{6,}$/;
   useEffect(() => {
     if (formState.email) {
       setChanged((prevState) => ({ ...prevState, email: true }));
@@ -86,14 +98,18 @@ export const SignUp = () => {
         }));
       }
     }
-    if(formState.date_of_birth)
-    {
-      setChanged((prevState) => ({...prevState , date_of_birth:true}));
-      setValid((prevState) => ({...prevState,date_of_birth:isAboveAge(formState.date_of_birth)}));
-
+    if (formState.date_of_birth) {
+      setChanged((prevState) => ({ ...prevState, date_of_birth: true }));
+      setValid((prevState) => ({
+        ...prevState,
+        date_of_birth: isAboveAge(formState.date_of_birth),
+      }));
     }
-  }, [formState]);
-  
+    if(isSubmit)
+    {
+      //registering the data
+    }
+  }, [formState , isSubmit]);
 
   return (
     <div className=" flex items-center justify-center py-16">
@@ -107,14 +123,18 @@ export const SignUp = () => {
             type="text"
             name="First Name"
             handleChange={handleChange}
-            {...(isEMpty && formState.firstName == '' ? {isEmpty:'First Name is required'}: {} )}
+            {...(isEMpty && formState.firstName == ""
+              ? { isEmpty: "First Name is required" }
+              : {})}
           />
           <Input
             id="LastName"
             type="text"
             name="Last Name"
             handleChange={handleChange}
-            {...(isEMpty && formState.LastName == '' ? {isEmpty:'Last Name is required'}: {} )}
+            {...(isEMpty && formState.LastName == ""
+              ? { isEmpty: "Last Name is required" }
+              : {})}
           />
         </div>
         <Input
@@ -122,7 +142,9 @@ export const SignUp = () => {
           type="email"
           name="Email"
           handleChange={handleChange}
-          {...(isEMpty && formState.email == '' ? {isEmpty:'email is required'}: {} )}
+          {...(isEMpty && formState.email == ""
+            ? { isEmpty: "email is required" }
+            : {})}
           {...(isChanged.email ? { isEmailValid: isValid.email } : {})}
         />
         <Input
@@ -130,14 +152,20 @@ export const SignUp = () => {
           type="date"
           name="Date Of Birth"
           handleChange={handleChange}
-          {...(isEMpty && formState.date_of_birth == '' ? {isEmpty:'Dob is required'}: {} )}
-          {...(isChanged.date_of_birth ? { isValidAge: !isValid.date_of_birth } : {})}
+          {...(isEMpty && formState.date_of_birth == ""
+            ? { isEmpty: "Dob is required" }
+            : {})}
+          {...(isChanged.date_of_birth
+            ? { isValidAge: !isValid.date_of_birth }
+            : {})}
         />
         <Input
           id="username"
           type="text"
           name="Username"
-          {...(isEMpty && formState.username == '' ? {isEmpty:'Username is required'}: {} )}
+          {...(isEMpty && formState.username == ""
+            ? { isEmpty: "Username is required" }
+            : {})}
           handleChange={handleChange}
         />
         <Input
@@ -145,7 +173,9 @@ export const SignUp = () => {
           type="password"
           name="Password"
           handleChange={handleChange}
-          {...(isEMpty && formState.password == '' ? {isEmpty:'Password is required'}: {} )}
+          {...(isEMpty && formState.password == ""
+            ? { isEmpty: "Password is required" }
+            : {})}
           {...(isChanged.password ? { isPasswordValid: isValid.password } : {})}
           isChanged={isChanged.password}
         />
@@ -153,18 +183,20 @@ export const SignUp = () => {
         <Input
           id="cnfrm_password"
           type="password"
-          name="Confirm Password" 
+          name="Confirm Password"
           handleChange={handleChange}
-          {...(isEMpty && formState.cnfrm_password == '' ? {isEmpty:'Re-enter Password'}: {} )}
+          {...(isEMpty && formState.cnfrm_password == ""
+            ? { isEmpty: "Re-enter Password" }
+            : {})}
           {...(isChanged.cnfrm_password
-            ? { isCnfrmPasswd: !isValid.cnfrm_password } 
+            ? { isCnfrmPasswd: !isValid.cnfrm_password }
             : {})}
         />
 
         <div className="flex justify-center">
           <Button
             type="submit"
-            display="submit"
+            display={isSubmit ? "Registering..." : "Submit"}
             className="text-white mt-4 w-2/4  bg-orange-600 hover:bg-orange-700 focus:ring-2 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-orange-600 dark:hover:bg-orange-600 focus:outline-none dark:focus:ring-orange-600"
           />
         </div>
@@ -172,3 +204,7 @@ export const SignUp = () => {
     </div>
   );
 };
+
+
+//if all these conditions are matched ----register the user in the backend
+//if regsitration is sucessfulll  --- navigate to
