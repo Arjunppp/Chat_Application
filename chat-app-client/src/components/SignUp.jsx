@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "./input";
 import { Button } from "./button";
+import { isAboveAge } from "../utils/getAgeUtil";
 
 export const SignUp = () => {
   const [formState, setFormState] = useState({
@@ -16,14 +17,25 @@ export const SignUp = () => {
     email: false,
     password: false,
     cnfrm_password: false,
+    date_of_birth:false,
   });
   const [isChanged, setChanged] = useState({
     email: false,
     password: false,
     cnfrm_password: false,
+    date_of_birth:false
+
   });
+  const [isEMpty , setEmpty] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
+    for (const key in formState) {
+      if (formState[key] === "") {
+        setEmpty(true);
+        break;
+      }
+    };
+    console.log(formState);
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,8 +45,7 @@ export const SignUp = () => {
     }));
   };
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])[a-zA-Z\d@#$%^&+=!]{6,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])[a-zA-Z\d@#$%^&+=!]{6,}$/;
   useEffect(() => {
     if (formState.email) {
       setChanged((prevState) => ({ ...prevState, email: true }));
@@ -63,18 +74,26 @@ export const SignUp = () => {
     if (formState.cnfrm_password) {
       setChanged((prevState) => ({ ...prevState, cnfrm_password: true }));
 
-      formState.password === formState.cnfrm_password
-        ? setValid((prevState) => ({
-            ...prevState,
-            cnfrm_password: true,
-          }))
-        : setValid((prevState) => ({
-            ...prevState,
-            cnfrm_password: false,
-          }));
+      if (formState.password === formState.cnfrm_password) {
+        setValid((prevState) => ({
+          ...prevState,
+          cnfrm_password: true, // Matches password
+        }));
+      } else {
+        setValid((prevState) => ({
+          ...prevState,
+          cnfrm_password: false, // Does not match password
+        }));
+      }
+    }
+    if(formState.date_of_birth)
+    {
+      setChanged((prevState) => ({...prevState , date_of_birth:true}));
+      setValid((prevState) => ({...prevState,date_of_birth:isAboveAge(formState.date_of_birth)}));
+
     }
   }, [formState]);
-  console.log(formState);
+  
 
   return (
     <div className=" flex items-center justify-center py-16">
@@ -88,12 +107,14 @@ export const SignUp = () => {
             type="text"
             name="First Name"
             handleChange={handleChange}
+            {...(isEMpty && formState.firstName == '' ? {isEmpty:'First Name is required'}: {} )}
           />
           <Input
             id="LastName"
             type="text"
             name="Last Name"
             handleChange={handleChange}
+            {...(isEMpty && formState.LastName == '' ? {isEmpty:'Last Name is required'}: {} )}
           />
         </div>
         <Input
@@ -101,6 +122,7 @@ export const SignUp = () => {
           type="email"
           name="Email"
           handleChange={handleChange}
+          {...(isEMpty && formState.email == '' ? {isEmpty:'email is required'}: {} )}
           {...(isChanged.email ? { isEmailValid: isValid.email } : {})}
         />
         <Input
@@ -108,11 +130,14 @@ export const SignUp = () => {
           type="date"
           name="Date Of Birth"
           handleChange={handleChange}
+          {...(isEMpty && formState.date_of_birth == '' ? {isEmpty:'Dob is required'}: {} )}
+          {...(isChanged.date_of_birth ? { isValidAge: !isValid.date_of_birth } : {})}
         />
         <Input
           id="username"
           type="text"
           name="Username"
+          {...(isEMpty && formState.username == '' ? {isEmpty:'Username is required'}: {} )}
           handleChange={handleChange}
         />
         <Input
@@ -120,14 +145,20 @@ export const SignUp = () => {
           type="password"
           name="Password"
           handleChange={handleChange}
+          {...(isEMpty && formState.password == '' ? {isEmpty:'Password is required'}: {} )}
           {...(isChanged.password ? { isPasswordValid: isValid.password } : {})}
+          isChanged={isChanged.password}
         />
+
         <Input
           id="cnfrm_password"
           type="password"
-          name="Confirm Password"
+          name="Confirm Password" 
           handleChange={handleChange}
-          {...(isChanged.cnfrm_password ? { isCnfrmPasswd: isValid.cnfrm_password } : {})}
+          {...(isEMpty && formState.cnfrm_password == '' ? {isEmpty:'Re-enter Password'}: {} )}
+          {...(isChanged.cnfrm_password
+            ? { isCnfrmPasswd: !isValid.cnfrm_password } 
+            : {})}
         />
 
         <div className="flex justify-center">
