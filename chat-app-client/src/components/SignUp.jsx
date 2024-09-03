@@ -107,6 +107,8 @@ export const SignUp = () => {
     }
     if(isSubmit)
     {
+      console.log(formState);
+      
       //registering the data
     }
   }, [formState , isSubmit]);

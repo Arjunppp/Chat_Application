@@ -12,6 +12,9 @@
 /chat-app-client/*.sln
 /chat-app-client/*.sw?
 
+
+
+/chat-app-server/.env
 /chat-app-server/node_modules
 /chat-app-server/dist
 /chat-app-server/dist-ssr
