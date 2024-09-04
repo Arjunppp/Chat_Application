@@ -10,7 +10,7 @@ export default defineConfig({
     password: process.env.DB_PASSWORD,
     port :process.env.DB_PORT,
     database: process.env.DB_NAME,
-    // connectionString:process.env.POSTGRES_URI 
+   
   },
   verbose:true,
   strict:true

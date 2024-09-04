@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Input } from "./input";
 import { Button } from "./button";
 import { isAboveAge } from "../utils/getAgeUtil";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const SignUp = () => {
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     firstName: "",
     LastName: "",
@@ -105,13 +108,27 @@ export const SignUp = () => {
         date_of_birth: isAboveAge(formState.date_of_birth),
       }));
     }
-    if(isSubmit)
-    {
+    if (isSubmit) {
       console.log(formState);
-      
-      //registering the data
+
+      const postFormData = async () => {
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/signup",
+            formState
+          );
+
+          if (response.status === 201) {
+            navigate('/login');
+          }
+        } catch (error) {
+          console.error("Error submitting form: ", error);
+        }
+      };
+
+      postFormData();
     }
-  }, [formState , isSubmit]);
+  }, [formState, isSubmit]);
 
   return (
     <div className=" flex items-center justify-center py-16">
@@ -206,7 +223,6 @@ export const SignUp = () => {
     </div>
   );
 };
-
 
 //if all these conditions are matched ----register the user in the backend
 //if regsitration is sucessfulll  --- navigate to
