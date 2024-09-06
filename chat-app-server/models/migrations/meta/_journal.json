@@ -8,6 +8,13 @@
       "when": 1725368569681,
       "tag": "0000_brief_silvermane",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1725541276273,
+      "tag": "0001_small_scrambler",
+      "breakpoints": true
     }
   ]
 }

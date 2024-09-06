@@ -1,5 +1,6 @@
 import { db } from "../models/db.js";
-import { loginModel } from "../models/Schema.js";
+import { SignUp } from "../models/Schema.js";
+import {  hashedPassword } from "../utils/bcryptUtil.js"; 
 
 
 // async function main()
@@ -14,15 +15,16 @@ import { loginModel } from "../models/Schema.js";
 
 export const userSignUp = async (data) => {
    try {
-      console.log(data);
       
-      await db.insert(loginModel).values({
+      const hashedPass = await hashedPassword(data.password);
+      
+      await db.insert(SignUp).values({
          firstName : data.firstName,
          lastName: data.LastName,
          dateOfBirth: data.date_of_birth,
          email: data.email,
          username: data.username,
-         password: data.password
+         password: hashedPass
        });
        
    } catch (error) {
